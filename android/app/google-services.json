@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "912177811917",
+    "firebase_url": "https://honey-toon.firebaseio.com",
+    "project_id": "honey-toon",
+    "storage_bucket": "honey-toon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912177811917:android:a3a7c07f98991a991a3484",
+        "android_client_info": {
+          "package_name": "com.jeonghyun.honeytoon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912177811917-4k7rbof6u0ab90oktccee0ik3mck7m2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXU445d0fQKqdpKFx-wsg68F-RyIZ8SHc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "912177811917-4k7rbof6u0ab90oktccee0ik3mck7m2c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "912177811917-lcqph0s5fttlc62bnpd8bid79l70dr13.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jeonghyun.honeytoon"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
