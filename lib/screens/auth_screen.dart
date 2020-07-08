@@ -16,10 +16,6 @@ class _AuthScreenState extends State<AuthScreen> {
   void _loginKakao() async {
     final user = await FirebaseAuth.instance.currentUser();
     if(user != null){
-      print(user.displayName);
-      print(user.email);
-      print(user.uid);
-      print(user.photoUrl);
       print('already login');
     } else {
       print('kakao login');
