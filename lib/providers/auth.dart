@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/common.dart';
+import 'package:flutter_line_sdk/flutter_line_sdk.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -9,6 +10,7 @@ class Auth with ChangeNotifier {
 
   Future<FirebaseUser> kakaoLogin() async {
     try {
+      print('kakao login start');
       final installed = await isKakaoTalkInstalled();
       final authCode = installed ? await AuthCodeClient.instance.requestWithTalk() : await AuthCodeClient.instance.request();
       final token = await AuthApi.instance.issueAccessToken(authCode);

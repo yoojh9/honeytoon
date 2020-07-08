@@ -153,6 +153,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_line_sdk:
+    dependency: "direct main"
+    description:
+      name: flutter_line_sdk
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.0"
   flutter_native_splash:
     dependency: "direct main"
     description:
