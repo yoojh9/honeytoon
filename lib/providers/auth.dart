@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/common.dart';
-import 'package:flutter_line_sdk/flutter_line_sdk.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
