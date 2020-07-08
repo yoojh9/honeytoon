@@ -21,7 +21,7 @@
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>KAKAO_APP_KEY</key>
-	<string>34461bb86a5d8782ab16e75419d5955</string>
+	<string>a34461bb86a5d8782ab16e75419d5955</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaoa34461bb86a5d8782ab16e75419d5955</string>

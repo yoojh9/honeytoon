@@ -6,7 +6,7 @@ import './providers/auth.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  KakaoContext.clientId = "030ba7c59137629e86e8721eb1a22fd6";
+  KakaoContext.clientId = "a34461bb86a5d8782ab16e75419d5955";
   KakaoContext.javascriptClientId = "38549e1d4f65d4c9c19ac37cad047400";
   runApp(MyApp());
 }

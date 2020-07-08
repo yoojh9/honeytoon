@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../providers/auth.dart';
 import 'package:provider/provider.dart';
@@ -12,9 +13,18 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  void _loginKakao() {
-    print('kakao login');
-    Provider.of<Auth>(context, listen: false).kakaoLogin();
+  void _loginKakao() async {
+    final user = await FirebaseAuth.instance.currentUser();
+    if(user != null){
+      print(user.displayName);
+      print(user.email);
+      print(user.uid);
+      print(user.photoUrl);
+      print('already login');
+    } else {
+      print('kakao login');
+      final firebaseUser = await Provider.of<Auth>(context, listen: false).kakaoLogin();
+    }
   }
 
   @override
