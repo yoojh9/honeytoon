@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './honeytoon_detail_screen.dart';
 
 class HoneyToonListScreen extends StatefulWidget {
   @override
@@ -6,7 +7,6 @@ class HoneyToonListScreen extends StatefulWidget {
 }
 
 class _HoneyToonListScreenState extends State<HoneyToonListScreen> {
-  int _selectedIndex = 0;
 
   final List<String> _listItem = [
     'assets/images/two.jpg',
@@ -19,33 +19,23 @@ class _HoneyToonListScreenState extends State<HoneyToonListScreen> {
     'assets/images/four.jpg',
     'assets/images/five.jpg',
   ];
-  
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+
+  void _onTabEvent(BuildContext ctx){
+    Navigator.of(ctx).pushNamed(HoneytoonDetailScreen.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text("허니툰"),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.attach_money), onPressed: (){}),
-          IconButton(icon: Icon(Icons.search), onPressed: (){})
-        ],
-      ),
-      body: 
-      SafeArea(
+    final size = MediaQuery.of(context).size;
+
+    return SafeArea(
         child: Container(
           padding: EdgeInsets.all(20.0),
           child: Column(
             children: <Widget>[
               Container(
                 width: double.infinity,
-                height: 250,
+                height: size.height * 0.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
@@ -103,49 +93,38 @@ class _HoneyToonListScreenState extends State<HoneyToonListScreen> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  children: _listItem.map((item) => Card(
-                    color: Colors.transparent,
-                    elevation: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage(item),
-                          fit: BoxFit.cover
-                        )
-                      ),
-                      child: Transform.translate(
-                        offset: Offset(50, -50),
+                  children: _listItem.map((item) => GestureDetector(
+                    onTap: (){_onTabEvent(context);},
+                      child: Card(
+                        color: Colors.transparent,
+                        elevation: 0,
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 65, vertical: 63),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                              image: AssetImage(item),
+                              fit: BoxFit.cover
+                            )
                           ),
-                          child: Icon(Icons.bookmark_border, size: 15,),
+                          child: Transform.translate(
+                            offset: Offset(50, -50),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 65, vertical: 63),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white
+                              ),
+                              child: Icon(Icons.bookmark_border, size: 15,),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
                   )).toList(),
                 )
               ),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home,), title: Text('Home')),
-          BottomNavigationBarItem(icon: Icon(Icons.person,), title: Text('My')),
-          BottomNavigationBarItem(icon: Icon(Icons.settings,), title: Text('Setting')),
-          BottomNavigationBarItem(icon: Icon(Icons.settings,), title: Text('Setting')),
-        ],
-
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-            selectedItemColor: Theme.of(context).primaryColor
-      ),
-    );
+      );
   }
 }

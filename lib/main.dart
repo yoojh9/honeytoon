@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:honeytoon/screens/honeytoon_detail_screen.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import './screens/honeytoon_list_screen.dart';
 import './screens/auth_screen.dart';
+import './screens/template_screen.dart';
+import './screens/coupon_screen.dart';
 import './providers/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -27,14 +30,18 @@ class MyApp extends StatelessWidget {
           primarySwatch: themeColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: AuthScreen(),
+        home: TemplateScreen(),
         routes: {
-          "list": (context) => HoneyToonListScreen()
+          "list": (context) => HoneyToonListScreen(),
+          CouponScreen.routeName: (context) => CouponScreen(),
+          HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen()
         },
         ),
       );
   }
 }
+
+
 
 const MaterialColor themeColor = MaterialColor(0XFFFFBE42,
   <int, Color>{

@@ -58,7 +58,10 @@ flutter:
     - assets/images/five.jpg
     - assets/images/kakao_login_icon.png
     - assets/images/naver_login_icon.png
-    - assets/images/google_login_icon.png
+    - assets/images/honey_pot.png
+    - assets/images/americano.jpg
+    - assets/images/capture.jpeg
+    - assets/images/capture2.jpeg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

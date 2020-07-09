@@ -55,13 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     onTap: (){}
                   ),
                   SizedBox(width: 20),
-                  GestureDetector(
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/google_login_icon.png'),
-                      radius: 30,
-                      ), 
-                    onTap: (){}
-                  ),
+
                 ]
               ),
             ),
