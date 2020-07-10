@@ -5,6 +5,7 @@ import './screens/honeytoon_list_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/template_screen.dart';
 import './screens/coupon_screen.dart';
+import './screens/honeytoon_view_screen.dart';
 import './providers/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         routes: {
           "list": (context) => HoneyToonListScreen(),
           CouponScreen.routeName: (context) => CouponScreen(),
+          HoneytoonViewScreen.routeName: (context) => HoneytoonViewScreen(),
           HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen()
         },
         ),
