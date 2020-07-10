@@ -10,7 +10,7 @@ class HoneyToonListScreen extends StatefulWidget {
 class _HoneyToonListScreenState extends State<HoneyToonListScreen> {
 
   final List<String> _listItem = [
-    'assets/images/two.jpg',
+    'assets/images/capture.jpeg',
     'assets/images/three.jpg',
     'assets/images/four.jpg',
     'assets/images/five.jpg',
@@ -31,12 +31,12 @@ class _HoneyToonListScreenState extends State<HoneyToonListScreen> {
 
     return SafeArea(
         child: Container(
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
               Container(
                 width: double.infinity,
-                height: size.height * 0.3,
+                height: size.height * 0.25,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
@@ -91,9 +91,9 @@ class _HoneyToonListScreenState extends State<HoneyToonListScreen> {
               SizedBox(height: 10),
               Expanded(
                 child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
                   children: _listItem.map((item) => GestureDetector(
                     onTap: (){_onTabEvent(context);},
                       child: Card(
