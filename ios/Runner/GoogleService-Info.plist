@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>912177811917-lcqph0s5fttlc62bnpd8bid79l70dr13.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.912177811917-lcqph0s5fttlc62bnpd8bid79l70dr13</string>
+	<key>API_KEY</key>
+	<string>AIzaSyALyYNWUlIug1gSPwE4GUwDXg0SamJ2HY0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>912177811917</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.jeonghyun.honeytoon</string>
+	<key>PROJECT_ID</key>
+	<string>honey-toon</string>
+	<key>STORAGE_BUCKET</key>
+	<string>honey-toon.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:912177811917:ios:9cdf0f54c70234ab1a3484</string>
+	<key>DATABASE_URL</key>
+	<string>https://honey-toon.firebaseio.com</string>
+</dict>
+</plist>
