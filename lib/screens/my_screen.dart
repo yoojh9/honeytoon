@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './honeytoon_my_screen.dart';
 import './honeytoon_favorite_screen.dart';
 
 class MyScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _MyScreenState extends State<MyScreen>
           body: TabBarView(
             controller: _controller,
             children: <Widget>[
-              Center(child: Text('내정보')),
+              HoneytoonMyScreen(),
               HoneytoonFavoriteScreen(),
               Center(child: Text('최근본'))
             ],

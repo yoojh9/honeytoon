@@ -34,7 +34,7 @@ class _TemplateScreenState extends State<TemplateScreen> {
               elevation: 0,
               title: Text("허니툰"),
               actions: <Widget>[
-                IconButton(icon: Icon(Icons.attach_money), onPressed: () {}),
+                IconButton(icon: Icon(Icons.add), onPressed: () {}),
                 IconButton(icon: Icon(Icons.search), onPressed: () {})
               ],
             )
