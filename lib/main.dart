@@ -30,6 +30,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: themeColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          brightness: Brightness.light,
+        ),
+        darkTheme: ThemeData(
+          primarySwatch: themeColor,
+          brightness: Brightness.dark,
         ),
         home: TemplateScreen(),
         routes: {

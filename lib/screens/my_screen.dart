@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './honeytoon_favorite_screen.dart';
 
 class MyScreen extends StatefulWidget {
   @override
@@ -24,6 +25,7 @@ class _MyScreenState extends State<MyScreen>
 
   @override
   Widget build(BuildContext context) {
+    
     return DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -47,7 +49,7 @@ class _MyScreenState extends State<MyScreen>
             controller: _controller,
             children: <Widget>[
               Center(child: Text('내정보')),
-              Center(child: Text('관심툰')),
+              HoneytoonFavoriteScreen(),
               Center(child: Text('최근본'))
             ],
           ),

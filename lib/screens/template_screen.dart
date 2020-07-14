@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './my_screen.dart';
 import './point_screen.dart';
 import './honeytoon_list_screen.dart';
+import './setting_screen.dart';
 
 class TemplateScreen extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class _TemplateScreenState extends State<TemplateScreen> {
     HoneyToonListScreen(),
     PointScreen(),
     MyScreen(),
-    null
+    SettingScreen()
   ];
 
   void _onTap(int index) {
