@@ -12,63 +12,39 @@ class _SettingScreenState extends State<SettingScreen> {
   bool lockInBackground = true;
   bool notificationsEnabled = true;
 
+
   @override
   Widget build(BuildContext context) {
+
     return SettingList(
-        sections: [
-          SettingsSection(
-            title: 'Common',
-            tiles: [
-              SettingsTile(
-                title: 'Environment',
-                subtitle: 'Production',
-                leading: Icon(Icons.cloud_queue),
-                onTap: (){},
-              ),
-            ],
-          ),
-          SettingsSection(
-            title: 'Account',
-            tiles: [
-              SettingsTile(title: 'user name', leading: Icon(Icons.person)),
-              SettingsTile(title: 'phone number', leading: Icon(Icons.phone))
-            ]
-          ),
-          SettingsSection(
-            title: 'Security',
-            tiles: [
-              SettingsTile.switchTile(
-                title: 'Lock app in background',
-                leading: Icon(Icons.phonelink_lock),
-                switchValue: lockInBackground,
-                onToggle: (bool value) {
-                  setState(() {
-                    lockInBackground = value;
-                    notificationsEnabled = value;
-                  });
-                },
-              ),
-              SettingsTile.switchTile(
-                  title: 'Use fingerprint',
-                  leading: Icon(Icons.fingerprint),
-                  onToggle: (bool value) {},
-                  switchValue: false),
-              SettingsTile.switchTile(
-                title: 'Change password',
-                leading: Icon(Icons.lock),
-                switchValue: true,
-                onToggle: (bool value) {},
-              ),
-              SettingsTile.switchTile(
-                title: 'Enable Notifications',
-                enabled: notificationsEnabled,
-                leading: Icon(Icons.notifications_active),
-                switchValue: true,
-                onToggle: (value) {},
-              ),
-            ],
-          ),
-        ]
-      );
+          sections: [
+            SettingsSection(
+              title: '내 정보',
+              tiles: [
+                SettingsTile(title: '프로필 설정'),
+              ]
+            ),
+            SettingsSection(
+              title: '알림',
+              tiles: [
+                SettingsTile(title: '푸시 알림',),
+              ]
+            ),
+            SettingsSection(
+              title: '앱 정보',
+              tiles: [
+                SettingsTile(title: '버전 정보', subtitle: '1.0.3',),
+                SettingsTile(title: '공지사항',),
+                SettingsTile(title: '자주 묻는 질문',),
+                SettingsTile(title: '이용약관',),
+                SettingsTile(title: '오픈소스 라이선스',),
+                
+              ],
+            ),
+
+
+          ]
+
+    );
   }
 }
