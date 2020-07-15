@@ -30,7 +30,7 @@ class _TemplateScreenState extends State<TemplateScreen> {
     return Scaffold(
       appBar: _currentIndex == 0
           ? AppBar(
-              backgroundColor: Colors.white70,
+              backgroundColor: Colors.transparent,
               elevation: 0,
               title: Text("허니툰"),
               actions: <Widget>[

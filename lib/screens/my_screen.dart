@@ -33,7 +33,7 @@ class _MyScreenState extends State<MyScreen>
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight),
             child: Container(
-              color: Colors.white,
+              color: Colors.transparent,
               child: SafeArea(
                 child: TabBar(
                   controller: _controller,

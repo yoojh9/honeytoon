@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:honeytoon/screens/honeytoon_add_screen.dart';
 import 'package:honeytoon/screens/honeytoon_detail_screen.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import './screens/honeytoon_list_screen.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
           "list": (context) => HoneyToonListScreen(),
           CouponScreen.routeName: (context) => CouponScreen(),
           HoneytoonViewScreen.routeName: (context) => HoneytoonViewScreen(),
-          HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen()
+          HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen(),
+          HoneytoonAddScreen.routeName: (context) => HoneytoonAddScreen()
         },
         ),
       );
