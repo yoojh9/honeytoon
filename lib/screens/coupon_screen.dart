@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'auth_screen.dart';
 
 class CouponScreen extends StatefulWidget {
@@ -13,17 +14,25 @@ class _CouponScreenState extends State<CouponScreen> {
   var _user;
 
   Future<FirebaseUser> getUserData() async {
-      final currentUser = await FirebaseAuth.instance.currentUser();
-      return currentUser;
+    final currentUser = await FirebaseAuth.instance.currentUser();
+    return currentUser;
   }
 
   @override
   void initState() {
+    print(_user);
     setState(() {
       _user = getUserData();
-      _user = null;
     });
     super.initState();
+  }
+
+  void _loginPage(BuildContext ctx) async {
+    final authUser = await Navigator.of(ctx).pushNamed(AuthScreen.routeName);
+
+    setState((){
+      _user = authUser;
+    });
   }
 
   @override
@@ -44,7 +53,7 @@ class _CouponScreenState extends State<CouponScreen> {
               borderRadius: BorderRadius.circular(30),
             ),
             child: Text('로그인'),
-            onPressed: (){ Navigator.of(context).pushNamed(AuthScreen.routeName);}),
+            onPressed: () => _loginPage(context)),
         )
         : SafeArea(
           child: SingleChildScrollView(

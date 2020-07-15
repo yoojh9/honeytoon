@@ -14,26 +14,27 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  void _loginKakao() async {
-    final user = await FirebaseAuth.instance.currentUser();
+  var user;
 
-    if(user != null){
-      print('already login');
-    } else {
-      print('kakao login');
-      await Provider.of<Auth>(context, listen: false).kakaoLogin();
+  void _loginKakao(BuildContext ctx) async {
+    user = await FirebaseAuth.instance.currentUser();
+
+    if(user==null){
+      user = await Provider.of<Auth>(context, listen: false).kakaoLogin();
     }
+
+    Navigator.of(ctx).pop(user);
+
   }
 
-  void _loginFacebook() async {
-    final user = await FirebaseAuth.instance.currentUser();
+  void _loginFacebook(BuildContext ctx) async {
+    user = await FirebaseAuth.instance.currentUser();
 
-    if(user != null){
-      print('already login');
-    } else {
-      print('facebook login');
-      await Provider.of<Auth>(context, listen: false).facebookLogin();
+    if(user==null){
+      user = await Provider.of<Auth>(context, listen: false).facebookLogin();
     }
+
+    Navigator.of(ctx).pop(user);
   }
 
 
@@ -63,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       backgroundImage: AssetImage('assets/images/kakao_login_icon.png'),
                       radius: 30,
                       ), 
-                    onTap: _loginKakao
+                    onTap: () => _loginKakao(context)
                   ),
                   SizedBox(width: 20),
                   GestureDetector(
@@ -71,7 +72,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       backgroundImage: AssetImage('assets/images/facebook_login_icon.png'),
                       radius: 30,
                       ), 
-                    onTap: _loginFacebook
+                    onTap: () => _loginFacebook(context)
                   ),
                   SizedBox(width: 20),
 

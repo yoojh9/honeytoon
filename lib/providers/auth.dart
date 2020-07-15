@@ -64,7 +64,7 @@ class Auth with ChangeNotifier {
         'provider': 'FACEBOOK',
         'thumbnail': authResult.user.photoUrl
       });
-
+  
       return authResult.user;
     } on PlatformException catch(error){
       var message = 'An error occurred, please check your credentials!';
@@ -86,6 +86,7 @@ class Auth with ChangeNotifier {
     );
     final data = json.decode(response.body) as Map<String, dynamic>;
     print('data=$data');
+    
     return data['firebase_token'];
   }
 
