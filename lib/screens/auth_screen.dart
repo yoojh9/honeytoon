@@ -27,13 +27,12 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _loginFacebook() async {
     final user = await FirebaseAuth.instance.currentUser();
-    await Provider.of<Auth>(context, listen: false).facebookLogin();
 
     if(user != null){
       print('already login');
     } else {
       print('facebook login');
-      //await Provider.of<Auth>(context, listen: false).facebookLogin();
+      await Provider.of<Auth>(context, listen: false).facebookLogin();
     }
   }
 

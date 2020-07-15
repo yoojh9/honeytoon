@@ -1,14 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/common.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Auth with ChangeNotifier {
 
   final _auth = FirebaseAuth.instance;
+  final _db = Firestore.instance;
 
   Future<FirebaseUser> kakaoLogin() async {
     try {
@@ -34,27 +37,41 @@ class Auth with ChangeNotifier {
   }
 
   Future<FirebaseUser> facebookLogin() async {
-    final FacebookLogin facebookSignIn = FacebookLogin();
-    final FacebookLoginResult result = await facebookSignIn.logIn(['email', 'public_profile']);
-    FacebookAccessToken accessToken;
+    try {
+      final FacebookLogin facebookSignIn = FacebookLogin();
+      final FacebookLoginResult result = await facebookSignIn.logIn(['email', 'public_profile']);
+      FacebookAccessToken accessToken;
 
-    switch(result.status) {
-      case FacebookLoginStatus.loggedIn:
-        accessToken = result.accessToken;
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        break;
-      case FacebookLoginStatus.error:
-        break;
+      switch(result.status) {
+        case FacebookLoginStatus.loggedIn:
+          accessToken = result.accessToken;
+          break;
+        case FacebookLoginStatus.cancelledByUser:
+          break;
+        case FacebookLoginStatus.error:
+          break;
+      }
+      
+      AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: accessToken.token);
+      AuthResult authResult = await _auth.signInWithCredential(credential);
+
+      print(authResult.user.displayName);
+      print(authResult.user);
+
+      await _db.collection('users').document(authResult.user.uid).setData({
+        'displayName': authResult.user.displayName,
+        'email': authResult.user.email,
+        'provider': 'FACEBOOK',
+        'thumbnail': authResult.user.photoUrl
+      });
+
+      return authResult.user;
+    } on PlatformException catch(error){
+      var message = 'An error occurred, please check your credentials!';
+      print(error);
+    } catch(error) {
+      print(error);
     }
-    
-    AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: accessToken.token);
-    AuthResult authResult = await _auth.signInWithCredential(credential);
-
-    print(authResult.user.displayName);
-    print(accessToken.userId);
-
-    return authResult.user;
   }
 
 
