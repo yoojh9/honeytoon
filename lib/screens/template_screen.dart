@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import './point_template_screen.dart';
 import './my_screen.dart';
-import './point_screen.dart';
 import './honeytoon_list_screen.dart';
 import './setting_screen.dart';
 
@@ -14,7 +14,7 @@ class _TemplateScreenState extends State<TemplateScreen> {
 
   final List<Widget> _bodyWidget = [
     HoneyToonListScreen(),
-    PointScreen(),
+    PointTemplateScreen(),
     MyScreen(),
     SettingScreen()
   ];

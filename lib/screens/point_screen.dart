@@ -10,11 +10,10 @@ class PointScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
-    final height = mediaQueryData.size.height - (mediaQueryData.padding.top + mediaQueryData.padding.bottom + 50);
+    final height = mediaQueryData.size.height - (mediaQueryData.padding.top + mediaQueryData.padding.bottom + kToolbarHeight + 100);
     final width = mediaQueryData.size.width - (mediaQueryData.padding.left + mediaQueryData.padding.right);
 
-    return SafeArea(
-        child: Column(
+    return Column(
           children: [
             Container(
               margin: EdgeInsets.symmetric(vertical: 15),
@@ -110,7 +109,6 @@ class PointScreen extends StatelessWidget {
             ),
             )
           ]
-        )
-    );
+        );
   }
 }
