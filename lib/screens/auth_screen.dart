@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 
 class AuthScreen extends StatefulWidget {
+  static final routeName = 'auth-screen';
 
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -15,25 +16,44 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   void _loginKakao() async {
     final user = await FirebaseAuth.instance.currentUser();
+
     if(user != null){
       print('already login');
     } else {
       print('kakao login');
-      final firebaseUser = await Provider.of<Auth>(context, listen: false).kakaoLogin();
+      await Provider.of<Auth>(context, listen: false).kakaoLogin();
     }
   }
+
+  void _loginFacebook() async {
+    final user = await FirebaseAuth.instance.currentUser();
+    await Provider.of<Auth>(context, listen: false).facebookLogin();
+
+    if(user != null){
+      print('already login');
+    } else {
+      print('facebook login');
+      //await Provider.of<Auth>(context, listen: false).facebookLogin();
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('로그인')),
+      appBar: AppBar(
+        title: Text('로그인')
+      ),
       body: 
       Padding(
         padding: EdgeInsets.symmetric(vertical:48 , horizontal:16),
         child: Column(
           children: <Widget>[
           Text('SNS 계정으로 로그인 / 가입', style:TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Container(
+          Expanded(
+            flex: 1,
+            child: Container(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: Row(
@@ -44,25 +64,26 @@ class _AuthScreenState extends State<AuthScreen> {
                       backgroundImage: AssetImage('assets/images/kakao_login_icon.png'),
                       radius: 30,
                       ), 
-                    onTap: () => _loginKakao()
+                    onTap: _loginKakao
                   ),
                   SizedBox(width: 20),
                   GestureDetector(
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/naver_login_icon.png'),
+                      backgroundImage: AssetImage('assets/images/facebook_login_icon.png'),
                       radius: 30,
                       ), 
-                    onTap: (){}
+                    onTap: _loginFacebook
                   ),
                   SizedBox(width: 20),
 
                 ]
               ),
             ),
-          ),
-          SizedBox(height: 40,),
+          ),),
           Text('이메일로 로그인 / 가입', style:TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Container(
+          Expanded(
+            flex: 2,
+            child: Container(
             margin: const EdgeInsets.symmetric(vertical: 16),
             child: Column(
               children: [
@@ -79,6 +100,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     onPressed: (){}),)
               ]
             )
+          ),  
           )
 
           ],

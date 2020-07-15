@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/common.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Auth with ChangeNotifier {
+
+  final _auth = FirebaseAuth.instance;
 
   Future<FirebaseUser> kakaoLogin() async {
     try {
@@ -30,6 +33,32 @@ class Auth with ChangeNotifier {
     }
   }
 
+  Future<FirebaseUser> facebookLogin() async {
+    final FacebookLogin facebookSignIn = FacebookLogin();
+    final FacebookLoginResult result = await facebookSignIn.logIn(['email', 'public_profile']);
+    FacebookAccessToken accessToken;
+
+    switch(result.status) {
+      case FacebookLoginStatus.loggedIn:
+        accessToken = result.accessToken;
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        break;
+      case FacebookLoginStatus.error:
+        break;
+    }
+    
+    AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: accessToken.token);
+    AuthResult authResult = await _auth.signInWithCredential(credential);
+
+    print(authResult.user.displayName);
+    print(accessToken.userId);
+
+    return authResult.user;
+  }
+
+
+
   Future<String> getFirebaseToken(String kakaoToken) async {
     print('kakaoToken: $kakaoToken');
     const url = "https://asia-northeast1-honey-toon.cloudfunctions.net/app/custom-token";
@@ -44,7 +73,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<FirebaseUser> signInWithCustomToken(String token) async {
-    final authResult = await FirebaseAuth.instance.signInWithCustomToken(token: token);
+    final authResult = await _auth.signInWithCustomToken(token: token);
     print(authResult.user);
     return authResult.user;
   }

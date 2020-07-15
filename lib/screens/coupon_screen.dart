@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'auth_screen.dart';
 
-class CouponScreen extends StatelessWidget {
+class CouponScreen extends StatefulWidget {
   static final routeName = 'coupon-screen';
-  
+
+  @override
+  _CouponScreenState createState() => _CouponScreenState();
+}
+
+class _CouponScreenState extends State<CouponScreen> {
+  var _user;
+
+  Future<FirebaseUser> getUserData() async {
+      final currentUser = await FirebaseAuth.instance.currentUser();
+      return currentUser;
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      _user = getUserData();
+      _user = null;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
@@ -13,37 +36,26 @@ class CouponScreen extends StatelessWidget {
         title: Text('내 쿠폰함'),
       ),
       body: 
-        SafeArea(child: SingleChildScrollView(
-        child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                child: Text('미 사용 쿠폰'), 
-                alignment: Alignment.centerLeft,
-              ),
-              ListView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemBuilder: (ctx, index) => 
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      leading: ClipRRect(
-                        child: Image.asset('assets/images/americano.jpg'),
-                      ),
-                      title: Text('[스타벅스] 아이스 아메리카노'),
-                      subtitle: Text('2020-07-12까지'),
-                      trailing: FlatButton(onPressed: null, child: Text('사용하기')),
-                    ),
-                  ),            
-                itemCount: 2,
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                child: Text('사용 완료 | 유효기간 만료'), 
-                alignment: Alignment.centerLeft,
-              ),
-              ListView.builder(
+        _user == null 
+        ? Center(
+          child:  RaisedButton(
+            color: Theme.of(context).primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Text('로그인'),
+            onPressed: (){ Navigator.of(context).pushNamed(AuthScreen.routeName);}),
+        )
+        : SafeArea(
+          child: SingleChildScrollView(
+          child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  child: Text('미 사용 쿠폰'), 
+                  alignment: Alignment.centerLeft,
+                ),
+                ListView.builder(
                   primary: false,
                   shrinkWrap: true,
                   itemBuilder: (ctx, index) => 
@@ -51,18 +63,40 @@ class CouponScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                         leading: ClipRRect(
-                          child: 
-                           Image.asset('assets/images/americano.jpg', color: Colors.grey[50], colorBlendMode: BlendMode.color,),
+                          child: Image.asset('assets/images/americano.jpg'),
                         ),
-                        title: Text('[스타벅스] 아이스 아메리카노', style: TextStyle(color: Colors.grey, fontSize: 15),),
+                        title: Text('[스타벅스] 아이스 아메리카노'),
                         subtitle: Text('2020-07-12까지'),
                         trailing: FlatButton(onPressed: null, child: Text('사용하기')),
                       ),
                     ),            
-                  itemCount: 5,
-              ),
-          ]
-        )
+                  itemCount: 2,
+                ),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Text('사용 완료 | 유효기간 만료'), 
+                  alignment: Alignment.centerLeft,
+                ),
+                ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemBuilder: (ctx, index) => 
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: ClipRRect(
+                            child: 
+                            Image.asset('assets/images/americano.jpg', color: Colors.grey[50], colorBlendMode: BlendMode.color,),
+                          ),
+                          title: Text('[스타벅스] 아이스 아메리카노', style: TextStyle(color: Colors.grey, fontSize: 15),),
+                          subtitle: Text('2020-07-12까지'),
+                          trailing: FlatButton(onPressed: null, child: Text('사용하기')),
+                        ),
+                      ),            
+                    itemCount: 5,
+                ),
+            ]
+          )
         ),
       )
     );

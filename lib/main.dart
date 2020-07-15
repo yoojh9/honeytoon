@@ -43,7 +43,8 @@ class MyApp extends StatelessWidget {
           CouponScreen.routeName: (context) => CouponScreen(),
           HoneytoonViewScreen.routeName: (context) => HoneytoonViewScreen(),
           HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen(),
-          HoneytoonAddScreen.routeName: (context) => HoneytoonAddScreen()
+          HoneytoonAddScreen.routeName: (context) => HoneytoonAddScreen(),
+          AuthScreen.routeName: (context) => AuthScreen()
         },
         ),
       );
