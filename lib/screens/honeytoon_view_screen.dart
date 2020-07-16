@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import './honeytoon_comment_screen.dart';
 
 class HoneytoonViewScreen extends StatefulWidget {
   static final routeName = 'honeytoon-view';
@@ -11,6 +12,7 @@ class HoneytoonViewScreen extends StatefulWidget {
 class _HoneytoonViewScreenState extends State<HoneytoonViewScreen> with SingleTickerProviderStateMixin{
   ScrollController _scrollController;
   var _isVisible = true;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -31,8 +33,13 @@ class _HoneytoonViewScreenState extends State<HoneytoonViewScreen> with SingleTi
     });
   }
 
-  void _hideButtonNavController(){
-
+  void _onTap(BuildContext context, int index){
+    setState(() {
+      print(index);
+      if(index==1){
+        Navigator.of(context).pushNamed(HoneytoonnCommentScreen.routeName);
+      }
+    });
   }
 
   @override
@@ -76,7 +83,7 @@ class _HoneytoonViewScreenState extends State<HoneytoonViewScreen> with SingleTi
         AnimatedContainer(
             duration: Duration(milliseconds: 500),
             height: _isVisible ? 60 : 0,
-            child: _isVisible 
+            child: _isVisible
             ? Wrap(
                 children: [ BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -85,8 +92,12 @@ class _HoneytoonViewScreenState extends State<HoneytoonViewScreen> with SingleTi
                   BottomNavigationBarItem(icon: Icon(Icons.mode_comment), title: Text('댓글')),
                   BottomNavigationBarItem(icon: Icon(Icons.arrow_forward), title: Text('다음화')),
                 ],
-                onTap: null,
-                ),   ]
+                currentIndex: _currentIndex,
+                onTap: (index) {
+                  _onTap(context, index);
+                },
+                ),
+              ]
             ) 
             : Container(
               color: Colors.transparent,

@@ -1,12 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:honeytoon/screens/honeytoon_add_screen.dart';
-import 'package:honeytoon/screens/honeytoon_detail_screen.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import './screens/honeytoon_list_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/template_screen.dart';
 import './screens/coupon_screen.dart';
 import './screens/honeytoon_view_screen.dart';
+import './screens/honeytoon_comment_screen.dart';
+import './screens/honeytoon_detail_screen.dart';
+import './screens/honeytoon_add_screen.dart';
 import './providers/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +18,10 @@ void main() {
   runApp(MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
+
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,8 @@ class MyApp extends StatelessWidget {
           HoneytoonViewScreen.routeName: (context) => HoneytoonViewScreen(),
           HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen(),
           HoneytoonAddScreen.routeName: (context) => HoneytoonAddScreen(),
-          AuthScreen.routeName: (context) => AuthScreen()
+          AuthScreen.routeName: (context) => AuthScreen(),
+          HoneytoonnCommentScreen.routeName: (context) => HoneytoonnCommentScreen()
         },
         ),
       );

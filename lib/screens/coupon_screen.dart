@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
 import 'auth_screen.dart';
 
 class CouponScreen extends StatefulWidget {
@@ -12,20 +11,6 @@ class CouponScreen extends StatefulWidget {
 
 class _CouponScreenState extends State<CouponScreen> {
   var _user;
-
-  Future<FirebaseUser> getUserData() async {
-    final currentUser = await FirebaseAuth.instance.currentUser();
-    return currentUser;
-  }
-
-  @override
-  void initState() {
-    print(_user);
-    setState(() {
-      _user = getUserData();
-    });
-    super.initState();
-  }
 
   void _loginPage(BuildContext ctx) async {
     final authUser = await Navigator.of(ctx).pushNamed(AuthScreen.routeName);
@@ -45,17 +30,24 @@ class _CouponScreenState extends State<CouponScreen> {
         title: Text('내 쿠폰함'),
       ),
       body: 
-        _user == null 
-        ? Center(
-          child:  RaisedButton(
-            color: Theme.of(context).primaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Text('로그인'),
-            onPressed: () => _loginPage(context)),
-        )
-        : SafeArea(
+        StreamBuilder<FirebaseUser> (
+          stream: FirebaseAuth.instance.onAuthStateChanged,
+          builder: (BuildContext context, snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            else if(!snapshot.hasData) {
+             return Center(
+                child:  RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Text('로그인'),
+                  onPressed: () => _loginPage(context)),
+              );
+            } else {
+             return SafeArea(
           child: SingleChildScrollView(
           child: Column(
               children: [
@@ -107,6 +99,10 @@ class _CouponScreenState extends State<CouponScreen> {
             ]
           )
         ),
+      );
+            }
+          }
+            
       )
     );
   }

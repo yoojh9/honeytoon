@@ -79,5 +79,13 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Permission photo library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Permission camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Permission for video</string>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
 </dict>
 </plist>

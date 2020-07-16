@@ -10,8 +10,7 @@ class PointScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
-    final height = mediaQueryData.size.height - (mediaQueryData.padding.top + mediaQueryData.padding.bottom + kToolbarHeight + 100);
-    final width = mediaQueryData.size.width - (mediaQueryData.padding.left + mediaQueryData.padding.right);
+    final height = mediaQueryData.size.height - (kToolbarHeight + kTextTabBarHeight + kBottomNavigationBarHeight);
 
     return Column(
           children: [
