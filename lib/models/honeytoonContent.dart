@@ -1,4 +1,4 @@
-class Honeytoon {
+class HoneytoonContent {
   String coverImgUrl;
   var toonImgUrls;
 }

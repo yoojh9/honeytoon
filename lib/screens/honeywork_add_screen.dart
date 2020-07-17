@@ -6,7 +6,7 @@ import '../helpers/db.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import '../helpers/storage.dart';
-import '../models/honeywork.dart';
+import '../models/honeytoonMeta.dart';
 import '../colors.dart';
 
 class HoneytoonAddScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _HoneytoonAddScreenState extends State<HoneytoonAddScreen> {
   var _error = '';
   final picker = ImagePicker();
   var _isLoading = false;
-  var honeywork = HoneyWork();
+  var honeytoonMeta = HoneytoonMeta();
 
   Future _getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -46,11 +46,11 @@ class _HoneytoonAddScreenState extends State<HoneytoonAddScreen> {
 
     String downloadUrl = await Storage.uploadImageToStorage(_coverImage);
     print(downloadUrl);
-    honeywork.coverImgUrl = downloadUrl;
+    honeytoonMeta.coverImgUrl = downloadUrl;
 
-    honeywork.uid = user.uid;
+    honeytoonMeta.uid = user.uid;
 
-    await DB.addHoneywork(honeywork);
+    await DB.addHoneytoonMeta(honeytoonMeta);
 
     setState((){
       _isLoading = false;
@@ -179,7 +179,7 @@ class _HoneytoonAddScreenState extends State<HoneytoonAddScreen> {
                         }
                       },
                       onSaved: (value) {
-                        honeywork.title = value;
+                        honeytoonMeta.title = value;
                       },
                     ),
                     TextFormField(
@@ -197,7 +197,7 @@ class _HoneytoonAddScreenState extends State<HoneytoonAddScreen> {
                         }
                       },
                       onSaved: (value){
-                        honeywork.description = value;
+                        honeytoonMeta.description = value;
                       },
                     ),
                     RaisedButton(

@@ -1,4 +1,4 @@
-class HoneyWork {
+class HoneytoonMeta {
   String uid;
   String workId;
   String coverImgUrl;

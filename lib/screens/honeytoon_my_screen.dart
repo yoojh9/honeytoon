@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './honeytoon_add_screen.dart';
+import './add_contentmeta_screen.dart';
 import './auth_screen.dart';
 import '../widgets/my_honeytoon_listview.dart';
 import '../widgets/my_honeytoon_info.dart';
@@ -44,7 +44,7 @@ class HoneytoonMyScreen extends StatelessWidget {
                 ),
                 floatingActionButton: FloatingActionButton.extended(
                   onPressed: (){
-                    Navigator.of(context).pushNamed(HoneytoonAddScreen.routeName);
+                    Navigator.of(context).pushNamed(AddContentMetaScreen.routeName);
                   },
                   icon: Icon(Icons.add),
                   label: Text('작품'),

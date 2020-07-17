@@ -8,9 +8,8 @@ import './screens/coupon_screen.dart';
 import './screens/honeytoon_view_screen.dart';
 import './screens/honeytoon_comment_screen.dart';
 import './screens/honeytoon_detail_screen.dart';
-import './screens/honeytoon_add_screen.dart';
+import 'screens/add_contentmeta_screen.dart';
 import './providers/auth.dart';
-import 'helpers/storage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -49,10 +48,11 @@ class MyApp extends StatelessWidget {
           CouponScreen.routeName: (context) => CouponScreen(),
           HoneytoonViewScreen.routeName: (context) => HoneytoonViewScreen(),
           HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen(),
-          HoneytoonAddScreen.routeName: (context) => HoneytoonAddScreen(),
+          AddContentMetaScreen.routeName: (context) => AddContentMetaScreen(),
           AuthScreen.routeName: (context) => AuthScreen(),
           HoneytoonCommentScreen.routeName: (context) => HoneytoonCommentScreen(),
-          SettingMyinfoScreen.routeName: (context) => SettingMyinfoScreen()
+          SettingMyinfoScreen.routeName: (context) => SettingMyinfoScreen(),
+
         },
         ),
       );

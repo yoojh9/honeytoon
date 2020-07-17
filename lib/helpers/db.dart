@@ -1,18 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/honeywork.dart';
+import '../models/honeytoonMeta.dart';
 import 'package:uuid/uuid.dart';
 
 class DB {
   static final _db = Firestore.instance;
 
-  static Future<void> addHoneywork(HoneyWork honeywork) async {
-    await _db.collection('works').document(honeywork.uid).setData({
-      'id': Uuid().v4(),
+  static Future<void> addHoneytoonMeta(HoneytoonMeta meta) async {
+    final workId = Uuid().v4();
+    await _db.collection('toons').document(meta.uid).setData({
+      'id': workId,
       'total_count': 0,
-      'title': honeywork.title,
-      'description': honeywork.description,
-      'cover_img': honeywork.coverImgUrl,
-      'work':[]
+      'title': meta.title,
+      'description': meta.description,
+      'cover_img': meta.coverImgUrl,
+    });
+
+    await _db.collection('users').document(meta.uid).updateData({
+      'works': FieldValue.arrayUnion([workId])
     });
   }
+
+  static Future<List<HoneytoonMeta>> getHoneytoonMeta(String uid) async {
+    final list = await _db.collection('toons').document(uid).get();
+  }
+
 }
