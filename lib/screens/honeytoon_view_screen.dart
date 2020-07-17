@@ -37,7 +37,7 @@ class _HoneytoonViewScreenState extends State<HoneytoonViewScreen> with SingleTi
     setState(() {
       print(index);
       if(index==1){
-        Navigator.of(context).pushNamed(HoneytoonnCommentScreen.routeName);
+        Navigator.of(context).pushNamed(HoneytoonCommentScreen.routeName);
       }
     });
   }

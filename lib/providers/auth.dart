@@ -78,7 +78,7 @@ class Auth with ChangeNotifier {
 
   Future<String> getFirebaseToken(String kakaoToken) async {
     print('kakaoToken: $kakaoToken');
-    const url = "https://asia-northeast1-honey-toon.cloudfunctions.net/app/custom-token";
+    const url = "https://asia-northeast1-honeytoon-server.cloudfunctions.net/app/custom-token";
     final response = await http.post(
       url, 
       headers: {"Content-Type": "application/json"}, 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:honeytoon/screens/settings/setting_section.dart';
 import './settings/setting_list.dart';
 import './settings/setting_tile.dart';
+import './setting_myinfo_screen.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _SettingScreenState extends State<SettingScreen> {
             SettingsSection(
               title: '내 정보',
               tiles: [
-                SettingsTile(title: '프로필 설정'),
+                SettingsTile(title: '프로필 설정', onTap: (){Navigator.of(context).pushNamed(SettingMyinfoScreen.routeName);}),
               ]
             ),
             SettingsSection(

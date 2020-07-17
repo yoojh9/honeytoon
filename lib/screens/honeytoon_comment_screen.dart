@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class HoneytoonnCommentScreen extends StatefulWidget {
+class HoneytoonCommentScreen extends StatefulWidget {
   static const routeName = '/comment';
 
   @override
-  _HoneytoonnCommentScreenState createState() => _HoneytoonnCommentScreenState();
+  _HoneytoonCommentScreenState createState() => _HoneytoonCommentScreenState();
 }
 
-class _HoneytoonnCommentScreenState extends State<HoneytoonnCommentScreen> {
+class _HoneytoonCommentScreenState extends State<HoneytoonCommentScreen> {
   final TextEditingController _textController = new TextEditingController();
 
   void _handleSubmitted(String text){

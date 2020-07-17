@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:honeytoon/screens/setting_myinfo_screen.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import './screens/honeytoon_list_screen.dart';
 import './screens/auth_screen.dart';
@@ -50,7 +51,8 @@ class MyApp extends StatelessWidget {
           HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen(),
           HoneytoonAddScreen.routeName: (context) => HoneytoonAddScreen(),
           AuthScreen.routeName: (context) => AuthScreen(),
-          HoneytoonnCommentScreen.routeName: (context) => HoneytoonnCommentScreen()
+          HoneytoonCommentScreen.routeName: (context) => HoneytoonCommentScreen(),
+          SettingMyinfoScreen.routeName: (context) => SettingMyinfoScreen()
         },
         ),
       );
