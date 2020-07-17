@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:honeytoon/screens/setting_myinfo_screen.dart';
 import 'package:kakao_flutter_sdk/link.dart';
@@ -11,6 +10,7 @@ import './screens/honeytoon_comment_screen.dart';
 import './screens/honeytoon_detail_screen.dart';
 import './screens/honeytoon_add_screen.dart';
 import './providers/auth.dart';
+import 'helpers/storage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => Auth()
-        )
+          create: (ctx) => Auth(),
+        ),
       ],
       child: MaterialApp(
         title: 'Honey Toon',

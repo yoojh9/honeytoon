@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../helpers/db.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import '../helpers/storage.dart';
+import '../models/honeywork.dart';
 import '../colors.dart';
 
 class HoneytoonAddScreen extends StatefulWidget {
@@ -17,16 +21,41 @@ class _HoneytoonAddScreenState extends State<HoneytoonAddScreen> {
   
   final _formKey = GlobalKey<FormState>();
   List<Asset> _images = List<Asset>();
-  String _error = 'No Error Dectected';
   File _coverImage;
+  var _error = '';
   final picker = ImagePicker();
+  var _isLoading = false;
+  var honeywork = HoneyWork();
 
   Future _getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
     setState(() {
       _coverImage = File(pickedFile.path);
     });
+  }
+
+  Future<void> _submitForm() async{
+    final user = await FirebaseAuth.instance.currentUser();
+    final _isValid = _formKey.currentState.validate();
+    if(!_isValid) return;
+
+    _formKey.currentState.save();
+    setState((){
+      _isLoading = true;
+    });
+
+    String downloadUrl = await Storage.uploadImageToStorage(_coverImage);
+    print(downloadUrl);
+    honeywork.coverImgUrl = downloadUrl;
+
+    honeywork.uid = user.uid;
+
+    await DB.addHoneywork(honeywork);
+
+    setState((){
+      _isLoading = false;
+    });
+
   }
 
   @override
@@ -89,12 +118,17 @@ class _HoneytoonAddScreenState extends State<HoneytoonAddScreen> {
           Container(
             alignment: Alignment.center,
             padding: EdgeInsets.only(right: 16),
-            child : Text('완료', textScaleFactor: 1.5, style: TextStyle(fontSize:  12),),
+            
+            child : GestureDetector(
+              child: Text('완료', textScaleFactor: 1.5, style: TextStyle(fontSize:  12),),
+              onTap: _submitForm,
+              ),
           )
         ],
       ),
-      body: SafeArea(
-        
+      body: _isLoading 
+      ? Center(child: CircularProgressIndicator())
+      : SafeArea(    
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -135,8 +169,18 @@ class _HoneytoonAddScreenState extends State<HoneytoonAddScreen> {
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: '작품 제목'
-                      )
+                        hintText: '작품 제목',
+                      ),
+                      validator: (value) {
+                        if(value.isEmpty){
+                          return '작품 명을 입력해주세요';
+                        } else {
+                          return null;
+                        }
+                      },
+                      onSaved: (value) {
+                        honeywork.title = value;
+                      },
                     ),
                     TextFormField(
                       keyboardType: TextInputType.multiline,
@@ -144,7 +188,17 @@ class _HoneytoonAddScreenState extends State<HoneytoonAddScreen> {
                       decoration: InputDecoration(
                         alignLabelWithHint: true,
                         hintText: '작품 설명'
-                      )
+                      ),
+                      validator: (value){
+                        if(value.isEmpty) {
+                          return '작품 설명을 입력해주세요';
+                        } else {
+                          return null;
+                        }
+                      },
+                      onSaved: (value){
+                        honeywork.description = value;
+                      },
                     ),
                     RaisedButton(
                       color: Theme.of(context).primaryColor,
