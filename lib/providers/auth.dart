@@ -7,6 +7,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../models/user.dart';
 
 class Auth with ChangeNotifier {
 
@@ -72,6 +73,15 @@ class Auth with ChangeNotifier {
     } catch(error) {
       print(error);
     }
+  }
+
+  Future<User> getUserFromDB() async {
+    final firebaseUser = await _auth.currentUser();
+    final userData = await _db.collection('users').document(firebaseUser.uid).get();
+    User user = User(userData.data['uid'], userData.data['displayName'], userData.data['email'], 
+        userData.data['provider'], userData.data['thumbnail']);
+
+    return user;
   }
 
 
