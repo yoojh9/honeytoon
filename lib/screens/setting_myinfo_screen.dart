@@ -35,7 +35,6 @@ class _SettingMyinfoScreenState extends State<SettingMyinfoScreen> {
     final mediaQueryData = MediaQuery.of(context);
     final height = mediaQueryData.size.height - (kToolbarHeight + mediaQueryData.padding.top + mediaQueryData.padding.bottom);
     
-
     return Scaffold(
       appBar: AppBar(
         title: Text('프로필'), 
@@ -47,7 +46,12 @@ class _SettingMyinfoScreenState extends State<SettingMyinfoScreen> {
           stream: FirebaseAuth.instance.onAuthStateChanged,  
           builder: (_, snapshot) {
             print('hasData: ${!snapshot.hasData}');
-            if(!(snapshot.hasData)){
+            if(snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator()
+              );
+            }
+            else if(!(snapshot.hasData)){
               return Center(
                 child:  RaisedButton(
                   color: Theme.of(context).primaryColor,
@@ -59,11 +63,23 @@ class _SettingMyinfoScreenState extends State<SettingMyinfoScreen> {
               );
             } else {
                   return FutureBuilder(
-                    future: _getUserInfo(context),
+                    future: Provider.of<Auth>(context, listen: false).getUserFromDB(),
                     builder: (context, futureSnapshot) {
                       if(futureSnapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if(futureSnapshot.hasData) {
+                        return Center(
+                          child: CircularProgressIndicator()
+                        );
+                      } else if(!(futureSnapshot.hasData)) {
+                        return Center(
+                          child:  RaisedButton(
+                            color: Theme.of(context).primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Text('로그인'),
+                            onPressed: () => _loginPage(context)),
+                        );
+                      } else {
                         return Container(
                           height: height,
                           child: Column(
@@ -75,7 +91,7 @@ class _SettingMyinfoScreenState extends State<SettingMyinfoScreen> {
                                   children: <Widget>[
                                     CircleAvatar(
                                       backgroundImage: NetworkImage(futureSnapshot.data.thumbnail),
-                                      radius: 50,
+                                      radius: 40,
                                     ),
                                     Text(futureSnapshot.data.displayName, style: TextStyle(fontSize: 20,)),
                                     Text('12000꿀')

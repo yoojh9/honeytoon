@@ -63,7 +63,10 @@ class Auth with ChangeNotifier {
         'displayName': authResult.user.displayName,
         'email': authResult.user.email,
         'provider': 'FACEBOOK',
-        'thumbnail': authResult.user.photoUrl
+        'thumbnail': authResult.user.photoUrl,
+        'honey': 0,
+        'rank': -1,
+        'works': []
       });
   
       return authResult.user;
@@ -77,6 +80,9 @@ class Auth with ChangeNotifier {
 
   Future<User> getUserFromDB() async {
     final firebaseUser = await _auth.currentUser();
+    if(firebaseUser == null || firebaseUser.uid == null) {
+      return null;
+    }
     final userData = await _db.collection('users').document(firebaseUser.uid).get();
     User user = User(userData.data['uid'], userData.data['displayName'], userData.data['email'], 
         userData.data['provider'], userData.data['thumbnail']);
