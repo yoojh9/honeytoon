@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:honeytoon/helpers/db.dart';
+import '../helpers/db.dart';
 import './honeytoon_detail_screen.dart';
 import '../widgets/honeytoon_list_header.dart';
 import '../widgets/honeytoon_list_sort.dart';
@@ -77,13 +77,13 @@ class _HoneyToonListScreenState extends State<HoneyToonListScreen> {
                                     child: Padding(
                                       padding: EdgeInsets.all(10),
                                       child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text("${data['title']}", maxLines: 1, style: TextStyle(fontSize: 16)),
-                                      Text("${data['displayName']}", style: TextStyle(fontSize: 14, color: Colors.grey),)
-                                    // Text('제목2')
-                                    ],
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text("${data['title']}", maxLines: 1, style: TextStyle(fontSize: 16)),
+                                          Text("${data['displayName']}", style: TextStyle(fontSize: 14, color: Colors.grey),)
+                                        // Text('제목2')
+                                        ],
                                       )
                                     )
                                   )
