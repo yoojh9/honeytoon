@@ -68,6 +68,7 @@ flutter:
     - assets/images/capture.jpeg
     - assets/images/capture2.jpeg
     - assets/images/facebook_login_icon.png
+    - assets/images/placeholder.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
