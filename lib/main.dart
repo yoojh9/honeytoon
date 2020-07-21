@@ -5,7 +5,7 @@ import 'package:kakao_flutter_sdk/link.dart';
 import './screens/honeytoon_list_screen.dart';
 import './screens/auth_screen.dart';
 import './screens/template_screen.dart';
-import './screens/coupon_screen.dart';
+import './screens/point/coupon_screen.dart';
 import './screens/honeytoon_view_screen.dart';
 import './screens/honeytoon_comment_screen.dart';
 import './screens/honeytoon_detail_screen.dart';
