@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './point_template_screen.dart';
-import './my_screen.dart';
+import './point/point_template_screen.dart';
+import './my/my_screen.dart';
 import './honeytoon_list_screen.dart';
 import './setting_screen.dart';
 

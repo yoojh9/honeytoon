@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:honeytoon/screens/add_content_screen.dart';
 import 'package:honeytoon/screens/setting_myinfo_screen.dart';
 import './services/honeytoon_meta_api.dart';
 import 'package:kakao_flutter_sdk/link.dart';
@@ -10,9 +9,10 @@ import './screens/coupon_screen.dart';
 import './screens/honeytoon_view_screen.dart';
 import './screens/honeytoon_comment_screen.dart';
 import './screens/honeytoon_detail_screen.dart';
-import 'screens/add_contentmeta_screen.dart';
+import './screens/my/add_contentmeta_screen.dart';
+import './screens/my/add_content_screen.dart';
 import './providers/auth.dart';
-import './providers/honeytoonMetaProvider.dart';
+import './providers/honeytoon_meta_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {

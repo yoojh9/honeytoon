@@ -9,7 +9,7 @@ class PointTemplateScreen extends StatefulWidget {
 class _PointTemplateScreenState extends State<PointTemplateScreen>
     with SingleTickerProviderStateMixin {
   TabController _controller;
-  
+
   @override
   void initState() {
     super.initState();
@@ -27,31 +27,20 @@ class _PointTemplateScreenState extends State<PointTemplateScreen>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
-          child: Container(
-            color: Colors.transparent,
-            child: SafeArea(
-              child: TabBar(
-                controller: _controller,
-                tabs: <Widget>[
-                  Tab(text: '포인트'),
-                  Tab(text: '쇼핑하기')
-                ],
-              ),
-            )
-          ), 
-        ),
-        body: TabBarView(
-          controller: _controller,
-          children: <Widget>[
-            PointScreen(),
-            Center(child: Text('쇼핑하기'))
-          ]
-        )
-      ),
-
-      
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: Container(
+                color: Colors.transparent,
+                child: SafeArea(
+                  child: TabBar(
+                    controller: _controller,
+                    tabs: <Widget>[Tab(text: '포인트'), Tab(text: '쇼핑하기')],
+                  ),
+                )),
+          ),
+          body: TabBarView(
+              controller: _controller,
+              children: <Widget>[PointScreen(), Center(child: Text('쇼핑하기'))])),
     );
   }
 }
