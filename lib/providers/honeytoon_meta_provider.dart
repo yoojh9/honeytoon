@@ -20,6 +20,16 @@ class HoneytoonMetaProvider extends ChangeNotifier {
     return _metaList;
   }
 
+  Future<void> createHoneytoonMeta(HoneytoonMeta meta) async {
+    Map data = meta.toJson();
+    DocumentReference document = await _api.addDocument(data);
+  }
+
+  Future<void> updateHoneytoonMeta(HoneytoonMeta meta) async {
+    Map data = meta.toJson();
+    DocumentReference document = await _api.updateDocument(meta.workId, data);
+  }
+
   Stream<QuerySnapshot> streamMeta() {
     return _api.streamCollection();
   }

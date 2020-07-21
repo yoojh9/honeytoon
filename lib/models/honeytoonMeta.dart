@@ -32,7 +32,7 @@ class HoneytoonMeta {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.workId;
+    data['uid'] = this.uid;
     data['title'] = this.title;
     data['description'] = this.description;
     data['displayName'] = this.displayName;

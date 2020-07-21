@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../helpers/db.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:provider/provider.dart';
+import '../../providers/honeytoon_meta_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../helpers/storage.dart';
 import '../../models/honeytoonMeta.dart';
-import '../../colors.dart';
+import '../../widgets/cover_img_widget.dart';
 
 class AddContentMetaScreen extends StatefulWidget {
   static final routeName = 'add-contentmeta';
@@ -16,8 +19,10 @@ class AddContentMetaScreen extends StatefulWidget {
 }
 
 class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
+  HoneytoonMetaProvider _metaProvider;
   final _formKey = GlobalKey<FormState>();
-  File _coverImage;
+  List<Asset> _images = List<Asset>();
+  File coverImage;
   var _error = '';
   final picker = ImagePicker();
   var _isLoading = false;
@@ -26,7 +31,7 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
   Future _getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
-      _coverImage = File(pickedFile.path);
+      coverImage = File(pickedFile.path);
     });
   }
 
@@ -40,13 +45,15 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
       _isLoading = true;
     });
 
-    String downloadUrl = await Storage.uploadImageToStorage(_coverImage);
+    String downloadUrl = await Storage.uploadImageToStorage(coverImage);
     print(downloadUrl);
     honeytoonMeta.coverImgUrl = downloadUrl;
     honeytoonMeta.displayName = user.displayName;
     honeytoonMeta.uid = user.uid;
+    honeytoonMeta.createTime = Timestamp.now();
+    honeytoonMeta.totalCount = 0;
 
-    await DB.addHoneytoonMeta(honeytoonMeta);
+    _metaProvider.createHoneytoonMeta(honeytoonMeta);
 
     setState(() {
       _isLoading = false;
@@ -60,6 +67,45 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
     super.initState();
   }
 
+  Future<void> loadAssets() async {
+    List<Asset> resultList = List<Asset>();
+    String error = 'No Error Dectected';
+
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 6,
+        enableCamera: false,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+          actionBarColor: "#abcdef",
+          actionBarTitle: "Example App",
+          allViewTitle: "All Photos",
+          useDetailsView: false,
+          selectCircleStrokeColor: "#000000",
+        ),
+      );
+    } on Exception catch (e) {
+      error = e.toString();
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _images = resultList;
+      _error = error;
+    });
+  }
+
+  Widget buildGridView() {
+    return GridView.count(
+      crossAxisCount: 3,
+      children: List.generate(_images.length, (index) {
+        Asset asset = _images[index];
+        return AssetThumb(asset: asset, width: 300, height: 300);
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
@@ -69,6 +115,7 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
         (kToolbarHeight +
             mediaQueryData.padding.top +
             mediaQueryData.padding.bottom);
+    _metaProvider = Provider.of<HoneytoonMetaProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -96,77 +143,65 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
             ? Center(child: CircularProgressIndicator())
             : SafeArea(
                 child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 60, horizontal: 30),
+                padding: const EdgeInsets.all(16),
                 child: Form(
                   key: _formKey,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        _coverImage == null
-                            ? Container(
-                                height: height * 0.3,
-                                width: width * 0.5,
-                                decoration: BoxDecoration(
-                                  color: itemPressedColor,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Center(
-                                    child: FlatButton.icon(
-                                        onPressed: _getImage,
-                                        icon: Icon(
-                                          Icons.add_a_photo,
-                                          color: Colors.grey,
-                                        ),
-                                        label: Text(
-                                          '커버이미지',
-                                          style: TextStyle(color: Colors.grey),
-                                        ))))
-                            : Container(
-                                height: height * 0.3,
-                                width: width * 0.5,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: FileImage(_coverImage),
-                                        fit: BoxFit.cover),
-                                    borderRadius: BorderRadius.circular(12)),
-                              ),
-                        SizedBox(height: 30),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            hintText: '작품 제목',
+                  child: Column(children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: CoverImgWidget(coverImage),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: '작품 제목',
+                            ),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return '작품 명을 입력해주세요';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onSaved: (value) {
+                              honeytoonMeta.title = value;
+                            },
                           ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return '작품 명을 입력해주세요';
-                            } else {
-                              return null;
-                            }
-                          },
-                          onSaved: (value) {
-                            honeytoonMeta.title = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 3,
-                          decoration: InputDecoration(
-                              alignLabelWithHint: true, hintText: '작품 설명'),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return '작품 설명을 입력해주세요';
-                            } else {
-                              return null;
-                            }
-                          },
-                          onSaved: (value) {
-                            honeytoonMeta.description = value;
-                          },
-                        ),
-                      ]),
+                          TextFormField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 2,
+                            decoration: InputDecoration(
+                                alignLabelWithHint: true, hintText: '작품 설명'),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return '작품 설명을 입력해주세요';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onSaved: (value) {
+                              honeytoonMeta.description = value;
+                            },
+                          ),
+                          Spacer(),
+                          RaisedButton(
+                              color: Theme.of(context).primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Text('이미지 선택'),
+                              onPressed: loadAssets),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: _images.length > 0 ? buildGridView() : SizedBox(),
+                    )
+                  ]),
                 ),
               )));
   }
