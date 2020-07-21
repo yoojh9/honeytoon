@@ -52,7 +52,7 @@ class MyHonetoonInfo extends StatelessWidget {
                           Column(
                             children: <Widget>[
                               Text('작품정보', style: TextStyle( fontSize: 18.0,  color: Colors.black54),),
-                              Text("${user.works.length==0? '-': user.works.length}위", style: TextStyle( fontSize: 20.0, color: Colors.black87, fontFamily: ''),),
+                              Text("${user.works.length==0? '-': user.works.length}개", style: TextStyle( fontSize: 20.0, color: Colors.black87, fontFamily: ''),),
                             ],
                           ),
                           Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:honeytoon/screens/add_content_screen.dart';
 import 'package:honeytoon/screens/setting_myinfo_screen.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import './screens/honeytoon_list_screen.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
           HoneytoonViewScreen.routeName: (context) => HoneytoonViewScreen(),
           HoneytoonDetailScreen.routeName: (context) => HoneytoonDetailScreen(),
           AddContentMetaScreen.routeName: (context) => AddContentMetaScreen(),
+          AddContentScreen.routeName: (context) => AddContentScreen(),
           AuthScreen.routeName: (context) => AuthScreen(),
           HoneytoonCommentScreen.routeName: (context) => HoneytoonCommentScreen(),
           SettingMyinfoScreen.routeName: (context) => SettingMyinfoScreen(),

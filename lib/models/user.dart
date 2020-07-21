@@ -8,7 +8,7 @@ class User {
   int rank = -1;
   var works = [];
 
-  User(this.uid, this.displayName, this.email, this.provider, this.thumbnail);
+  User(this.uid, this.displayName, this.email, this.provider, this.thumbnail, this.honey, this.rank, this.works);
   
   @override
   String toString() {

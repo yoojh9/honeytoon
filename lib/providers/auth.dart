@@ -85,7 +85,8 @@ class Auth with ChangeNotifier {
     }
     final userData = await _db.collection('users').document(firebaseUser.uid).get();
     User user = User(userData.data['uid'], userData.data['displayName'], userData.data['email'], 
-        userData.data['provider'], userData.data['thumbnail']);
+        userData.data['provider'], userData.data['thumbnail'], userData.data['honey'],
+        userData.data['rank'], userData.data['works']);
 
     return user;
   }

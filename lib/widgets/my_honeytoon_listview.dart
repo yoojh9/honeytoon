@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/db.dart';
+import '../screens/add_content_screen.dart';
 
 class MyHoneytoonListView extends StatelessWidget {
   const MyHoneytoonListView({
@@ -55,7 +56,13 @@ class MyHoneytoonListView extends StatelessWidget {
                         )),
                       Expanded(
                         flex: 1,
-                        child: Icon(Icons.add))
+                        child: IconButton(
+                          icon: Icon(Icons.add,),
+                          onPressed:(){ 
+                            Navigator.of(context).pushNamed(AddContentScreen.routeName);
+                          }
+                          )
+                        )
                     ]
                   ),
                 );
