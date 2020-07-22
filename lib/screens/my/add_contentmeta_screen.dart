@@ -21,7 +21,7 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
   HoneytoonMetaProvider _metaProvider; 
   final _formKey = GlobalKey<FormState>();
   List<Asset> _images = List<Asset>();
-  File coverImage;
+  File _coverImage;
   var _error = '';
   var _isLoading = false;
   var honeytoonMeta = HoneytoonMeta();
@@ -36,7 +36,7 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
       _isLoading = true;
     });
 
-    String downloadUrl = await Storage.uploadImageToStorage(coverImage);
+    String downloadUrl = await Storage.uploadImageToStorage(StorageType.META_COVER, user.uid, _coverImage);
     honeytoonMeta.coverImgUrl = downloadUrl;
     honeytoonMeta.displayName = user.displayName;
     honeytoonMeta.uid = user.uid;
@@ -52,45 +52,11 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
     Navigator.of(ctx).pop();
   }
 
-  Future<void> loadAssets() async {
-    List<Asset> resultList = List<Asset>();
-    String error = 'No Error Dectected';
-
-    try {
-      resultList = await MultiImagePicker.pickImages(
-        maxImages: 6,
-        enableCamera: false,
-        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-        materialOptions: MaterialOptions(
-          actionBarColor: "#abcdef",
-          actionBarTitle: "Example App",
-          allViewTitle: "All Photos",
-          useDetailsView: false,
-          selectCircleStrokeColor: "#000000",
-        ),
-      );
-    } on Exception catch (e) {
-      error = e.toString();
-    }
-
-    if (!mounted) return;
-
+  void setImage(coverImage){
     setState(() {
-      _images = resultList;
-      _error = error;
+      _coverImage = coverImage;
     });
   }
-
-  Widget buildGridView() {
-    return GridView.count(
-      crossAxisCount: 3,
-      children: List.generate(_images.length, (index) {
-        Asset asset = _images[index];
-        return AssetThumb(asset: asset, width: 300, height: 300);
-      }),
-    );
-  }
-
 
   @override
   void initState() {
@@ -106,6 +72,7 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
     _metaProvider = Provider.of<HoneytoonMetaProvider>(context);
 
     return Scaffold(
+        resizeToAvoidBottomInset : false,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -135,17 +102,7 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
                 child: Form(
                   key: _formKey,
                   child: Column(children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: CoverImgWidget(coverImage),
-                    ),
-                    SizedBox(height: 20),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TextFormField(
+                    TextFormField(
                             decoration: InputDecoration(
                               hintText: '작품 제목',
                             ),
@@ -177,9 +134,11 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
                               honeytoonMeta.description = value;
                             },
                           ),
-                        ],
-                      ),
-                    ),
+                        SizedBox(height: 30),
+                        Container(
+                          height: height * 0.25,
+                          child: CoverImgWidget(_coverImage, setImage)
+                        ),
                   ]),
                 ),
               )));

@@ -21,7 +21,7 @@ class _AddContentScreenState extends State<AddContentScreen> {
   HoneytoonMetaProvider _metaProvider; 
   final _formKey = GlobalKey<FormState>();
   List<Asset> _images = List<Asset>();
-  File coverImage;
+  File _coverImage;
   var _error = '';
   var _isLoading = false;
   var honeytoonMeta = HoneytoonMeta();
@@ -35,13 +35,10 @@ class _AddContentScreenState extends State<AddContentScreen> {
     setState(() {
       _isLoading = true;
     });
-
-    String downloadUrl = await Storage.uploadImageToStorage(coverImage);
+     // TODO: id 변경
+    String downloadUrl = await Storage.uploadImageToStorage(StorageType.CONTENT_COVER, user.uid, _coverImage);
     honeytoonMeta.coverImgUrl = downloadUrl;
-    honeytoonMeta.displayName = user.displayName;
-    honeytoonMeta.uid = user.uid;
     honeytoonMeta.createTime = Timestamp.now();
-    honeytoonMeta.totalCount = 0;
 
     _metaProvider.createHoneytoonMeta(honeytoonMeta);
 
@@ -91,6 +88,11 @@ class _AddContentScreenState extends State<AddContentScreen> {
     );
   }
 
+  void setImage(coverImage){
+    setState(() {
+      _coverImage = coverImage;
+    });
+  }
 
   @override
   void initState() {
@@ -100,9 +102,6 @@ class _AddContentScreenState extends State<AddContentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQueryData = MediaQuery.of(context);
-    final width = mediaQueryData.size.width - (mediaQueryData.padding.right + mediaQueryData.padding.left);
-    final height = mediaQueryData.size.height - (kToolbarHeight + mediaQueryData.padding.top + mediaQueryData.padding.bottom);
     _metaProvider = Provider.of<HoneytoonMetaProvider>(context);
 
     return Scaffold(
@@ -138,7 +137,7 @@ class _AddContentScreenState extends State<AddContentScreen> {
                   child: Column(children: <Widget>[
                     Expanded(
                       flex: 1,
-                      child: CoverImgWidget(coverImage),
+                      child: CoverImgWidget(_coverImage, setImage),
                     ),
                     Expanded(
                       flex: 1,

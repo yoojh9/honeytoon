@@ -3,32 +3,24 @@ import 'package:honeytoon/colors.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-class CoverImgWidget extends StatefulWidget {
-  File _coverImage;
+class CoverImgWidget extends StatelessWidget {
+  File coverImage;
+  Function setImage;
 
-  CoverImgWidget(this._coverImage);
-
-  @override
-  _CoverImgWidgetState createState() => _CoverImgWidgetState();
-}
-
-class _CoverImgWidgetState extends State<CoverImgWidget> {
-  final picker = ImagePicker();
+  CoverImgWidget(this.coverImage, this.setImage);
 
   Future _getImage() async {
+    final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      widget._coverImage = File(pickedFile.path);
-    });
+    coverImage = File(pickedFile.path);
+    setImage(coverImage);
   }
-
 
   @override
   Widget build(BuildContext context) {
-    return 
-    AspectRatio(
+    return AspectRatio(
       aspectRatio: 1/1,
-      child: widget._coverImage == null 
+      child: coverImage == null 
           ? Container(
             decoration: BoxDecoration(
               color: itemPressedColor,
@@ -41,14 +33,14 @@ class _CoverImgWidgetState extends State<CoverImgWidget> {
             )
           )
           : Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: FileImage(widget._coverImage),
-                  fit: BoxFit.cover
-                ),
-                borderRadius: BorderRadius.circular(12)
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: FileImage(coverImage),
+                fit: BoxFit.cover
               ),
-            )
-      );
-    }
+              borderRadius: BorderRadius.circular(12)
+            ),
+          )
+    );
+  }
 }

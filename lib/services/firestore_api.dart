@@ -24,6 +24,10 @@ class FirestoreApi {
     return _collectionReference.add(data);
   }
 
+    Future<DocumentReference> setDocument(String id, Map data) {
+    return _collectionReference.document(id).setData(data);
+  }
+
   Future<DocumentReference> updateDocument(String id, Map data) {
     return _collectionReference.document(id).updateData(data);
   }
