@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:honeytoon/models/honeytoonMeta.dart';
+import 'package:honeytoon/providers/honeytoon_meta_provider.dart';
+import '../../providers/honeytoon_content_provider.dart';
+import '../../models/honeytoonContent.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
-import '../../providers/honeytoon_meta_provider.dart';
 import '../../helpers/storage.dart';
-import '../../models/honeytoonMeta.dart';
 import '../../widgets/cover_img_widget.dart';
 
 class AddContentScreen extends StatefulWidget {
@@ -18,16 +18,15 @@ class AddContentScreen extends StatefulWidget {
 }
 
 class _AddContentScreenState extends State<AddContentScreen> {
-  HoneytoonMetaProvider _metaProvider; 
+  HoneytoonContentProvider _contentProvider; 
+  HoneytoonMetaProvider _metaProvider;
+  
   final _formKey = GlobalKey<FormState>();
   List<Asset> _images = List<Asset>();
   File _coverImage;
-  var _error = '';
   var _isLoading = false;
-  var honeytoonMeta = HoneytoonMeta();
 
-  Future<void> _submitForm(BuildContext ctx) async {
-    final user = await FirebaseAuth.instance.currentUser();
+  Future<void> _submitForm(ctx, id, count) async {
     final _isValid = _formKey.currentState.validate();
     if (!_isValid) return;
 
@@ -35,19 +34,40 @@ class _AddContentScreenState extends State<AddContentScreen> {
     setState(() {
       _isLoading = true;
     });
-     // TODO: id 변경
-    String downloadUrl = await Storage.uploadImageToStorage(StorageType.CONTENT_COVER, user.uid, _coverImage);
-    honeytoonMeta.coverImgUrl = downloadUrl;
-    honeytoonMeta.createTime = Timestamp.now();
+    try {
+      final downloadUrl = await Storage.uploadImageToStorage(StorageType.CONTENT_COVER, id, _coverImage);
+      final List<String> contentImageList = await uploadContentImage(id, _images);
 
-    _metaProvider.createHoneytoonMeta(honeytoonMeta);
+      final contentItem = HoneytoonContentItem(coverImgUrl: downloadUrl, contentImgUrls: contentImageList);
+      
+      print('id:$id , content: $contentItem, count: $count');
+      final content = HoneytoonContent(toonId: id, content: contentItem, count: count);
 
-    setState(() {
-      _isLoading = false;
-    });
+      await _contentProvider.createHoneytoonContent(content);
+      print('add honeytoon content');
+      await _metaProvider.updateHoneytoonMeta(HoneytoonMeta(workId: id, totalCount: count));
 
-    Navigator.of(ctx).pop();
+      setState(() {
+        _isLoading = false;
+      });
+
+      Navigator.of(ctx).pop();
+
+    } catch (error){
+      print('error: $error');
+    }
   }
+
+  Future<List<String>> uploadContentImage(id, images) async {
+    final contentsImageList = List<String>();
+    for(Asset image in images){
+      final downloadUrl = await Storage.uploadContentImage(id, image);
+      contentsImageList.add(downloadUrl);
+    }
+    print('contentImageList:$contentsImageList');
+    return contentsImageList;
+  }
+
 
   Future<void> loadAssets() async {
     List<Asset> resultList = List<Asset>();
@@ -74,7 +94,6 @@ class _AddContentScreenState extends State<AddContentScreen> {
 
     setState(() {
       _images = resultList;
-      _error = error;
     });
   }
 
@@ -102,6 +121,9 @@ class _AddContentScreenState extends State<AddContentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    final total = (args['total'] + 1).toString();
+    _contentProvider = Provider.of<HoneytoonContentProvider>(context);
     _metaProvider = Provider.of<HoneytoonMetaProvider>(context);
 
     return Scaffold(
@@ -120,7 +142,7 @@ class _AddContentScreenState extends State<AddContentScreen> {
                   style: TextStyle(fontSize: 12),
                 ),
                 onTap: () {
-                  _submitForm(context);
+                  _submitForm(context, args['id'], args['total']+1);
                 },
               ),
             )
@@ -144,8 +166,8 @@ class _AddContentScreenState extends State<AddContentScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text('FLOWER', style: Theme.of(context).textTheme.headline6),
-                          Text('1화', style: Theme.of(context).textTheme.subtitle1),
+                          Text(args['title'], style: Theme.of(context).textTheme.headline6),
+                          Text('$total 화', style: Theme.of(context).textTheme.subtitle1),
                           
                           RaisedButton(
                               color: Theme.of(context).primaryColor,

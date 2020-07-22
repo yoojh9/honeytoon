@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class HoneytoonMeta {
   String workId;
@@ -11,7 +12,7 @@ class HoneytoonMeta {
   Timestamp createTime;
 
   HoneytoonMeta(
-      {this.workId,
+      {@required this.workId,
       this.uid,
       this.displayName,
       this.coverImgUrl,
@@ -32,13 +33,27 @@ class HoneytoonMeta {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uid'] = this.uid;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['displayName'] = this.displayName;
-    data['cover_img'] = this.coverImgUrl;
-    data['total_count'] = this.totalCount;
-    data['create_time'] = this.createTime;
+    if(this.uid!=null) {
+      data['uid'] = this.uid;
+    }
+    if(this.title!=null){
+      data['title'] = this.title;
+    }
+    if(this.description!=null){
+      data['description'] = this.description;
+    }
+    if(this.displayName!=null){
+      data['displayName'] = this.displayName;
+    }
+    if(this.coverImgUrl!=null){
+      data['cover_img'] = this.coverImgUrl;
+    }
+    if(this.totalCount!=null){
+      data['total_count'] = this.totalCount;
+    }
+    if(this.createTime!=null){
+      data['create_time'] = this.createTime;
+    }
     return data;
   }
 }

@@ -76,7 +76,7 @@ class MyHoneytoonListView extends StatelessWidget {
                               ),
                               onPressed: () {
                                 Navigator.of(context)
-                                    .pushNamed(AddContentScreen.routeName);
+                                    .pushNamed(AddContentScreen.routeName, arguments: {'id': data.workId, 'title': data.title, 'total': data.totalCount});
                               }))
                     ]),
                   );

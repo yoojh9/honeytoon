@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:honeytoon/screens/setting_myinfo_screen.dart';
+import './providers/honeytoon_content_provider.dart';
+import './screens/setting_myinfo_screen.dart';
+import './services/honeytoon_content_api.dart';
 import './services/honeytoon_meta_api.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import './screens/honeytoon_list_screen.dart';
@@ -24,6 +26,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   HoneytoonMetaApi _metaApi = HoneytoonMetaApi();
+  HoneytoonContentApi _contentApi = HoneytoonContentApi();
 
   // This widget is the root of your application.
   @override
@@ -35,6 +38,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => HoneytoonMetaProvider(_metaApi),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => HoneytoonContentProvider(_contentApi),
         )
       ],
       child: MaterialApp(

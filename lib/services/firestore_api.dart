@@ -8,6 +8,8 @@ class FirestoreApi {
     _collectionReference = _firestore.collection(collectionPath);
   }
 
+  get ref => _collectionReference;
+
   Stream<QuerySnapshot> streamCollection() {
     return _collectionReference.getDocuments().asStream();
   }
@@ -24,11 +26,11 @@ class FirestoreApi {
     return _collectionReference.add(data);
   }
 
-    Future<DocumentReference> setDocument(String id, Map data) {
+  Future<DocumentReference> setDocument(String id, Map data) {
     return _collectionReference.document(id).setData(data);
   }
 
-  Future<DocumentReference> updateDocument(String id, Map data) {
+  Future<void> updateDocument(String id, Map data) {
     return _collectionReference.document(id).updateData(data);
   }
 
