@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/honeytoon_meta_provider.dart';
 import '../../helpers/storage.dart';
@@ -20,11 +19,10 @@ class AddContentMetaScreen extends StatefulWidget {
 class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
   HoneytoonMetaProvider _metaProvider; 
   final _formKey = GlobalKey<FormState>();
-  List<Asset> _images = List<Asset>();
   File _coverImage;
-  var _error = '';
   var _isLoading = false;
   var honeytoonMeta = HoneytoonMeta();
+  final _descriptionFocusNode = FocusNode();
 
   Future<void> _submitForm(BuildContext ctx) async {
     final user = await FirebaseAuth.instance.currentUser();
@@ -63,11 +61,16 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _descriptionFocusNode.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
-    final width = mediaQueryData.size.width - (mediaQueryData.padding.right + mediaQueryData.padding.left);
     final height = mediaQueryData.size.height - (kToolbarHeight + mediaQueryData.padding.top + mediaQueryData.padding.bottom);
     _metaProvider = Provider.of<HoneytoonMetaProvider>(context);
 
@@ -103,42 +106,48 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
                   key: _formKey,
                   child: Column(children: <Widget>[
                     TextFormField(
-                            decoration: InputDecoration(
-                              hintText: '작품 제목',
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return '작품 명을 입력해주세요';
-                              } else {
-                                return null;
-                              }
-                            },
-                            onSaved: (value) {
-                              honeytoonMeta.title = value;
-                            },
-                          ),
-                          SizedBox(height: 20),
-                          TextFormField(
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 2,
-                            decoration: InputDecoration(
-                                alignLabelWithHint: true, hintText: '작품 설명'),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return '작품 설명을 입력해주세요';
-                              } else {
-                                return null;
-                              }
-                            },
-                            onSaved: (value) {
-                              honeytoonMeta.description = value;
-                            },
-                          ),
-                        SizedBox(height: 30),
-                        Container(
-                          height: height * 0.25,
-                          child: CoverImgWidget(_coverImage, setImage)
-                        ),
+                      decoration: InputDecoration(
+                        hintText: '작품 제목',
+                      ),
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_){
+                        FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return '작품 명을 입력해주세요';
+                        } else {
+                          return null;
+                        }
+                      },
+                      onSaved: (value) {
+                        honeytoonMeta.title = value;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.done,
+                      maxLines: 2,
+                      focusNode: _descriptionFocusNode,
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true, hintText: '작품 설명'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return '작품 설명을 입력해주세요';
+                        } else {
+                          return null;
+                        }
+                      },
+                      onSaved: (value) {
+                        honeytoonMeta.description = value;
+                      },
+                    ),
+                  SizedBox(height: 30),
+                  Container(
+                    height: height * 0.25,
+                    child: CoverImgWidget(_coverImage, setImage)
+                  ),
                   ]),
                 ),
               )));
