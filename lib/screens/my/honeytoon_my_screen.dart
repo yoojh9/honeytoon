@@ -5,13 +5,8 @@ import '../../widgets/my_honeytoon_listview.dart';
 import '../../widgets/my_honeytoon_info.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth.dart';
-import '../../models/user.dart';
 
 class HoneytoonMyScreen extends StatelessWidget {
-  Future<User> _getUserInfo(BuildContext ctx) async {
-    final user = await Provider.of<Auth>(ctx, listen: false).getUserFromDB();
-    return user;
-  }
 
   Future<void> _loginPage(BuildContext ctx) async {
     await Navigator.of(ctx).pushNamed(AuthScreen.routeName);
@@ -33,17 +28,15 @@ class HoneytoonMyScreen extends StatelessWidget {
               body: SingleChildScrollView(
                 child: Column(children: [
                   MyHonetoonInfo(height: height, user: futureSnapshot.data),
+                  FlatButton.icon(
+                    icon: Icon(Icons.add, color: Colors.grey,),
+                    label: Text('작품 추가', style: TextStyle(color: Colors.grey),),
+                    onPressed: (){
+                      Navigator.of(context).pushNamed(AddContentMetaScreen.routeName);
+                    },
+                  ),
                   MyHoneytoonListView(height: height),
                 ]),
-              ),
-              floatingActionButton: FloatingActionButton.extended(
-                onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(AddContentMetaScreen.routeName);
-                },
-                icon: Icon(Icons.add),
-                label: Text('작품'),
-                backgroundColor: Theme.of(context).primaryColor,
               ),
             );
           } else {

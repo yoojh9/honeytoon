@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/honeytoon_meta_provider.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../helpers/storage.dart';
 import '../../models/honeytoonMeta.dart';
 import '../../widgets/cover_img_widget.dart';
@@ -19,21 +18,13 @@ class AddContentMetaScreen extends StatefulWidget {
 }
 
 class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
-  HoneytoonMetaProvider _metaProvider;
+  HoneytoonMetaProvider _metaProvider; 
   final _formKey = GlobalKey<FormState>();
   List<Asset> _images = List<Asset>();
   File coverImage;
   var _error = '';
-  final picker = ImagePicker();
   var _isLoading = false;
   var honeytoonMeta = HoneytoonMeta();
-
-  Future _getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      coverImage = File(pickedFile.path);
-    });
-  }
 
   Future<void> _submitForm(BuildContext ctx) async {
     final user = await FirebaseAuth.instance.currentUser();
@@ -46,7 +37,6 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
     });
 
     String downloadUrl = await Storage.uploadImageToStorage(coverImage);
-    print(downloadUrl);
     honeytoonMeta.coverImgUrl = downloadUrl;
     honeytoonMeta.displayName = user.displayName;
     honeytoonMeta.uid = user.uid;
@@ -60,11 +50,6 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
     });
 
     Navigator.of(ctx).pop();
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   Future<void> loadAssets() async {
@@ -106,15 +91,18 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
     );
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final mediaQueryData = MediaQuery.of(context);
-    final width = mediaQueryData.size.width -
-        (mediaQueryData.padding.right + mediaQueryData.padding.left);
-    final height = mediaQueryData.size.height -
-        (kToolbarHeight +
-            mediaQueryData.padding.top +
-            mediaQueryData.padding.bottom);
+    final width = mediaQueryData.size.width - (mediaQueryData.padding.right + mediaQueryData.padding.left);
+    final height = mediaQueryData.size.height - (kToolbarHeight + mediaQueryData.padding.top + mediaQueryData.padding.bottom);
     _metaProvider = Provider.of<HoneytoonMetaProvider>(context);
 
     return Scaffold(
@@ -143,7 +131,7 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
             ? Center(child: CircularProgressIndicator())
             : SafeArea(
                 child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 32),
                 child: Form(
                   key: _formKey,
                   child: Column(children: <Widget>[
@@ -151,9 +139,11 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
                       flex: 1,
                       child: CoverImgWidget(coverImage),
                     ),
+                    SizedBox(height: 20),
                     Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           TextFormField(
                             decoration: InputDecoration(
@@ -170,6 +160,7 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
                               honeytoonMeta.title = value;
                             },
                           ),
+                          SizedBox(height: 20),
                           TextFormField(
                             keyboardType: TextInputType.multiline,
                             maxLines: 2,
@@ -186,21 +177,9 @@ class _AddContentMetaScreenState extends State<AddContentMetaScreen> {
                               honeytoonMeta.description = value;
                             },
                           ),
-                          Spacer(),
-                          RaisedButton(
-                              color: Theme.of(context).primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: Text('이미지 선택'),
-                              onPressed: loadAssets),
                         ],
                       ),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: _images.length > 0 ? buildGridView() : SizedBox(),
-                    )
                   ]),
                 ),
               )));

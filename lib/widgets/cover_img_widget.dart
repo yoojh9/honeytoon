@@ -37,7 +37,7 @@ class _CoverImgWidgetState extends State<CoverImgWidget> {
             child: Center(child: FlatButton.icon(
               onPressed: _getImage, 
               icon: Icon(Icons.add_a_photo, color: Colors.grey,), 
-              label: Text('썸네일이미지', style: TextStyle(color: Colors.grey),))
+              label: Text('커버이미지', style: TextStyle(color: Colors.grey),))
             )
           )
           : Container(

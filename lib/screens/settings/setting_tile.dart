@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
 import './cupertino_settings_item.dart';
-import './cupertino_settings_section.dart';
 
 enum _SettingTileType { simple, switchTile }
 
