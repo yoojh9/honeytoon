@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import './honeytoonContentItem.dart';
+import '../models/honeytoonContentItem.dart';
+
 
 class HoneytoonContent {
   String toonId;

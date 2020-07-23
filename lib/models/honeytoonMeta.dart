@@ -22,7 +22,9 @@ class HoneytoonMeta {
 
   HoneytoonMeta.fromMap(Map snapshot, String documentId) {
     this.workId = documentId;
-    this.uid = snapshot['uid'];
+    if(snapshot['uid']!=null){
+      this.uid = snapshot['uid'];
+    }
     this.title = snapshot['title'];
     this.description = snapshot['description'];
     this.displayName = snapshot['displayName'];

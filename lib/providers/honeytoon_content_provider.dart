@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:honeytoon/models/honeytoonContentList.dart';
+import '../models/honeytoonContentItem.dart';
 import '../models/honeytoonContent.dart';
 import '../helpers/collections.dart';
 
@@ -9,21 +9,21 @@ class HoneytoonContentProvider extends ChangeNotifier {
   static final _contentRef = _firestore.collection(Collections.CONTENT);
   static final _metaRef = _firestore.collection(Collections.TOON);
 
-  List<HoneytoonContentList> _contents;
+  Future<List<HoneytoonContentItem>> getHoneytoonContentList(String toonId) async {
+    List<HoneytoonContentItem> _items;
 
-  Future<List<HoneytoonContentList>> getHoneytoonContentList() async {
-    QuerySnapshot result = await _contentRef.getDocuments();
-    _contents = result.documents
-        .map((document) =>
-            HoneytoonContentList.fromMap(document.data, document.documentID))
-        .toList();
-    return _contents;
+    QuerySnapshot result = await _contentRef.document(toonId).collection('items').orderBy('create_time' ,descending: true).getDocuments();
+    _items = result.documents
+      .map((document) => HoneytoonContentItem.fromMap(document.documentID, document.data))
+      .toList();
+
+    return _items;
   }
 
   Future<void> createHoneytoonContent(HoneytoonContent content) async {
     Map data = content.toJson();
     final DocumentReference contentReference = _contentRef.document(content.toonId)
-        .collection('items').document(content.count.toString());
+        .collection('items').document();
     final DocumentReference metaReference = _metaRef.document(content.toonId);
 
     _firestore.runTransaction((transaction) async {

@@ -48,58 +48,61 @@ class _HoneyToonListScreenState extends State<HoneyToonListScreen> {
                         return Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasData &&
                           snapshot.data.documents.length > 0) {
-                        _metaList = snapshot.data.documents
-                            .map((item) => HoneytoonMeta.fromMap(
-                                item.data, item.documentID))
-                            .toList();
+                            _metaList = snapshot.data.documents
+                              .map((item) => HoneytoonMeta.fromMap(
+                                  item.data, item.documentID))
+                              .toList();
 
                         return GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    childAspectRatio: 8 / 10),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 8 / 10
+                            ),
                             itemCount: _metaList.length,
                             itemBuilder: (_, index) {
-                              return Card(
-                                clipBehavior: Clip.antiAlias,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    AspectRatio(
-                                      aspectRatio: 4 / 3,
-                                      child: CachedNetworkImage(
-                                        imageUrl: _metaList[index].coverImgUrl,
-                                        placeholder: (context, url) => Image.asset(
-                                            'assets/images/image_spinner.gif'),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
-                                        fit: BoxFit.cover,
+                              return GestureDetector(
+                                onTap: (){Navigator.of(context).pushNamed(HoneytoonDetailScreen.routeName, arguments: {'id': _metaList[index].workId});},
+                                child: Card(
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      AspectRatio(
+                                        aspectRatio: 4 / 3,
+                                        child: CachedNetworkImage(
+                                          imageUrl: _metaList[index].coverImgUrl,
+                                          placeholder: (context, url) => Image.asset(
+                                              'assets/images/image_spinner.gif'),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                    Expanded(
-                                        child: Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Text(
-                                                    "${_metaList[index].title}",
-                                                    maxLines: 1,
+                                      Expanded(
+                                          child: Padding(
+                                              padding: EdgeInsets.all(10),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Text(
+                                                      "${_metaList[index].title}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          fontSize: 16)),
+                                                  Text(
+                                                    "${_metaList[index].displayName}",
                                                     style: TextStyle(
-                                                        fontSize: 16)),
-                                                Text(
-                                                  "${_metaList[index].displayName}",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey),
-                                                )
-                                                // Text('제목2')
-                                              ],
-                                            )))
-                                  ],
+                                                        fontSize: 14,
+                                                        color: Colors.grey),
+                                                  )
+                                                  // Text('제목2')
+                                                ],
+                                              )))
+                                      ],
+                                    ),
                                 ),
                               );
                             });

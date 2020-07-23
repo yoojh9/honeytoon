@@ -38,7 +38,7 @@ class _AddContentScreenState extends State<AddContentScreen> {
     try {
       final downloadUrl = await Storage.uploadImageToStorage(StorageType.CONTENT_COVER, id, _coverImage);
       final List<String> contentImageList = await uploadContentImage(id, _images);
-      final contentItem = HoneytoonContentItem(coverImgUrl: downloadUrl, contentImgUrls: contentImageList);
+      final contentItem = HoneytoonContentItem(times: count.toString(), coverImgUrl: downloadUrl, contentImgUrls: contentImageList,);
       final content = HoneytoonContent(toonId: id, content: contentItem, count: count);
       
       await _contentProvider.createHoneytoonContent(content);

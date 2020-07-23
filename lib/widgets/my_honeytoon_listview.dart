@@ -29,6 +29,7 @@ class MyHoneytoonListView extends StatelessWidget {
               return ListView.builder(
                 primary: false,
                 shrinkWrap: true,
+                itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {
                   print('snapshot.data: ${snapshot.data[index]}');
                   var data = snapshot.data[index];
@@ -81,7 +82,6 @@ class MyHoneytoonListView extends StatelessWidget {
                     ]),
                   );
                 },
-                itemCount: snapshot.data.length,
               );
             } else {
               return Center(child: Text('허니툰을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요'));

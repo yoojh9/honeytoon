@@ -18,6 +18,12 @@ class HoneytoonMetaProvider extends ChangeNotifier {
     return _metaList;
   }
 
+  Future<HoneytoonMeta> getHoneytoonMeta(String id) async {
+    DocumentSnapshot snapshot = await _metaRef.document(id).get();
+    HoneytoonMeta honeytoonMeta = HoneytoonMeta.fromMap(snapshot.data, snapshot.documentID);
+    return honeytoonMeta;
+  }
+
   Future<void> createHoneytoonMeta(HoneytoonMeta meta) async {
     Map data = meta.toJson();
     final DocumentReference metaReference = _metaRef.document();
