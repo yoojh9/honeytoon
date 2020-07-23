@@ -12,7 +12,7 @@ class HoneytoonMeta {
   Timestamp createTime;
 
   HoneytoonMeta(
-      {@required this.workId,
+      {this.workId,
       this.uid,
       this.displayName,
       this.coverImgUrl,

@@ -1,28 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:honeytoon/models/honeytoonContentList.dart';
 import '../models/honeytoonContent.dart';
-import '../services/honeytoon_content_api.dart';
+import '../helpers/collections.dart';
 
 class HoneytoonContentProvider extends ChangeNotifier {
-  HoneytoonContentApi _api;
-  List<HoneytoonContent> _contents;
+  static final _firestore = Firestore.instance;
+  static final _contentRef = _firestore.collection(Collections.CONTENT);
+  static final _metaRef = _firestore.collection(Collections.TOON);
 
-  HoneytoonContentProvider(HoneytoonContentApi api) {
-    _api = api;
-  }
+  List<HoneytoonContentList> _contents;
 
-  Future<List<HoneytoonContent>> getHoneytoonContentList() async {
-    QuerySnapshot result = await _api.getCollection();
+  Future<List<HoneytoonContentList>> getHoneytoonContentList() async {
+    QuerySnapshot result = await _contentRef.getDocuments();
     _contents = result.documents
         .map((document) =>
-            HoneytoonContent.fromMap(document.data, document.documentID))
+            HoneytoonContentList.fromMap(document.data, document.documentID))
         .toList();
     return _contents;
   }
 
   Future<void> createHoneytoonContent(HoneytoonContent content) async {
     Map data = content.toJson();
-    await _api.setContentDocument(content.toonId, content.count, data);
+    final DocumentReference contentReference = _contentRef.document(content.toonId)
+        .collection('items').document(content.count.toString());
+    final DocumentReference metaReference = _metaRef.document(content.toonId);
+
+    _firestore.runTransaction((transaction) async {
+      await transaction.set(contentReference, data);
+      await transaction.update(metaReference, {'total_count': content.count});
+    }).then((_){
+      print('success');
+    }).catchError((error){
+      print(error.message);
+    });
   }
 
   // Future<void> updateHoneytoonMeta(HoneytoonMeta meta) async {
@@ -31,6 +42,6 @@ class HoneytoonContentProvider extends ChangeNotifier {
   // }
 
   Stream<QuerySnapshot> streamMeta() {
-    return _api.streamCollection();
+    return _contentRef.getDocuments().asStream();
   }
 }

@@ -5,6 +5,7 @@ import 'package:honeytoon/models/honeytoonMeta.dart';
 import 'package:honeytoon/providers/honeytoon_meta_provider.dart';
 import '../../providers/honeytoon_content_provider.dart';
 import '../../models/honeytoonContent.dart';
+import '../../models/honeytoonContentItem.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../helpers/storage.dart';
@@ -37,14 +38,10 @@ class _AddContentScreenState extends State<AddContentScreen> {
     try {
       final downloadUrl = await Storage.uploadImageToStorage(StorageType.CONTENT_COVER, id, _coverImage);
       final List<String> contentImageList = await uploadContentImage(id, _images);
-
       final contentItem = HoneytoonContentItem(coverImgUrl: downloadUrl, contentImgUrls: contentImageList);
-      
-      print('id:$id , content: $contentItem, count: $count');
       final content = HoneytoonContent(toonId: id, content: contentItem, count: count);
-
+      
       await _contentProvider.createHoneytoonContent(content);
-      print('add honeytoon content');
       await _metaProvider.updateHoneytoonMeta(HoneytoonMeta(workId: id, totalCount: count));
 
       setState(() {
@@ -57,6 +54,7 @@ class _AddContentScreenState extends State<AddContentScreen> {
       print('error: $error');
     }
   }
+
 
   Future<List<String>> uploadContentImage(id, images) async {
     final contentsImageList = List<String>();
@@ -72,7 +70,6 @@ class _AddContentScreenState extends State<AddContentScreen> {
   Future<void> loadAssets() async {
     List<Asset> resultList = List<Asset>();
     String error = 'No Error Dectected';
-
     try {
       resultList = await MultiImagePicker.pickImages(
         maxImages: 6,
@@ -89,9 +86,7 @@ class _AddContentScreenState extends State<AddContentScreen> {
     } on Exception catch (e) {
       error = e.toString();
     }
-
     if (!mounted) return;
-
     setState(() {
       _images = resultList;
     });
