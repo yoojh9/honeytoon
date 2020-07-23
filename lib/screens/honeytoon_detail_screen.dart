@@ -95,7 +95,13 @@ class HoneytoonDetailScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5),
                                   child: GridTile(
                                     child: GestureDetector(
-                                      onTap: (){ Navigator.of(context).pushNamed(HoneytoonViewScreen.routeName); },
+                                      onTap: (){ Navigator.of(context).pushNamed(HoneytoonViewScreen.routeName, 
+                                        arguments: {
+                                          'id': args['id'], 
+                                          'images': snapshot.data[index].contentImgUrls,
+                                          'times': snapshot.data[index].times,
+                                        }); 
+                                      },
                                       child: CachedNetworkImage(
                                         imageUrl: snapshot.data[index].coverImgUrl,
                                         placeholder: (context, url) => Image.asset('assets/images/image_spinner.gif'),

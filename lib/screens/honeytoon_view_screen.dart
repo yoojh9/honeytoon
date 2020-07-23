@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './honeytoon_comment_screen.dart';
@@ -42,8 +43,23 @@ class _HoneytoonViewScreenState extends State<HoneytoonViewScreen> with SingleTi
     });
   }
 
+  Widget buildImage(List<String> images){
+    return Container(
+      child: Column(
+          children: 
+            images.map((image) => CachedNetworkImage(
+              imageUrl: image,
+              placeholder: (context, url) => Image.asset('assets/images/image_spinner.gif'),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+              fit: BoxFit.cover
+            )).toList()
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
     final mediaQueryData = MediaQuery.of(context);
     final height = mediaQueryData.size.height - (mediaQueryData.padding.top + mediaQueryData.padding.bottom + 160 );
 
@@ -59,20 +75,13 @@ class _HoneytoonViewScreenState extends State<HoneytoonViewScreen> with SingleTi
               leading: IconButton(icon: Icon(Icons.list), onPressed: (){Navigator.of(context).pop();}),
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
-                title: Text('3화', style: TextStyle(fontSize:20),),
+                title: Text('${args['times']}화', style: TextStyle(fontSize:20),),
               ),
             ),
  
             SliverList(
               delegate: SliverChildListDelegate([
-                Container(
-                  child: Column(
-                      children: [
-                        Image.asset('assets/images/capture.jpeg'),
-                        Image.asset('assets/images/capture2.jpeg')
-                      ]
-                    ),
-                ),
+                buildImage(args['images'])
               ])
             )
            
